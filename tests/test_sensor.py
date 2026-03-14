@@ -149,9 +149,7 @@ async def test_soil_moisture(
     entry = _make_config_entry()
     await _setup_integration(hass, entry, plant_data)
 
-    # HA generates entity_id from device_class name ("moisture")
-    # not the key ("soil_moisture")
-    state = hass.states.get("sensor.test_monstera_moisture")
+    state = hass.states.get("sensor.test_monstera_soil_moisture")
     assert state is not None
     assert state.state == "45.5"
     assert state.attributes["device_class"] == "moisture"

@@ -39,5 +39,24 @@
         }
       }
     }
+  },
+  "entity": {
+    "sensor": {
+      "temperature": { "name": "Temperature" },
+      "humidity": { "name": "Humidity" },
+      "soil_moisture": { "name": "Soil moisture" },
+      "light": { "name": "Light" },
+      "nutrient": { "name": "Nutrient" },
+      "battery": { "name": "Battery" },
+      "voltage": { "name": "Voltage" },
+      "temperature_status": { "name": "Temperature status" },
+      "humidity_status": { "name": "Humidity status" },
+      "soil_moisture_status": { "name": "Soil moisture status" },
+      "light_status": { "name": "Light status" },
+      "nutrient_status": { "name": "Nutrient status" }
+    },
+    "binary_sensor": {
+      "needs_attention": { "name": "Needs attention" }
+    }
   }
 }
