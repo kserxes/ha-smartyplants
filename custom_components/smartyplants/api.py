@@ -204,8 +204,10 @@ class SmartyPlantsClient:
                 headers=headers,
                 timeout=_REQUEST_TIMEOUT,
             ) as resp:
-                if resp.status in (401, 403):
-                    raise SmartyPlantsAuthError(f"Authentication failed: {resp.status}")
+                if resp.status in (401, 403, 406):
+                    raise SmartyPlantsAuthError(
+                        f"Authentication failed: {resp.status}"
+                    )
                 if resp.status >= 400:
                     raise SmartyPlantsError(f"API error: {resp.status}")
                 result = await resp.json()
