@@ -29,9 +29,7 @@ from .const import (
 )
 
 
-def _make_response(
-    status: int, json_data: dict | list | None = None
-) -> AsyncMock:
+def _make_response(status: int, json_data: dict | list | None = None) -> AsyncMock:
     """Create a mock aiohttp response."""
     resp = AsyncMock()
     resp.status = status

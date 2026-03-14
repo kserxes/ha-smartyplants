@@ -30,9 +30,7 @@ from .const import (
 )
 
 PATCH_CLIENT = "custom_components.smartyplants.config_flow.SmartyPlantsClient"
-PATCH_SESSION = (
-    "custom_components.smartyplants.config_flow.async_get_clientsession"
-)
+PATCH_SESSION = "custom_components.smartyplants.config_flow.async_get_clientsession"
 
 
 def _mock_login_success(client_mock: AsyncMock) -> None:
@@ -209,9 +207,7 @@ class TestReauthStep:
         assert entry.data[CONF_ACCESS_TOKEN] == MOCK_ACCESS_TOKEN
         assert entry.data[CONF_REFRESH_TOKEN] == MOCK_REFRESH_TOKEN
 
-    async def test_reauth_invalid_credentials(
-        self, hass: HomeAssistant
-    ) -> None:
+    async def test_reauth_invalid_credentials(self, hass: HomeAssistant) -> None:
         """Test that invalid credentials during reauth show an error."""
         from pytest_homeassistant_custom_component.common import MockConfigEntry
 

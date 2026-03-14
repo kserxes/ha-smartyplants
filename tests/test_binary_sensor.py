@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import CONF_EMAIL
@@ -67,13 +67,11 @@ async def _setup_integration(
         "custom_components.smartyplants.SmartyPlantsClient",
     ) as mock_client_class:
         client = AsyncMock()
+        client.set_tokens = MagicMock()
+        client.set_token_updated_callback = MagicMock()
         client.async_get_plants = AsyncMock(return_value=list(plant_data.values()))
         client.async_get_requires_attention = AsyncMock(
-            return_value={
-                pid
-                for pid, p in plant_data.items()
-                if p.needs_attention
-            }
+            return_value={pid for pid, p in plant_data.items() if p.needs_attention}
         )
         mock_client_class.return_value = client
 

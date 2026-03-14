@@ -111,15 +111,9 @@ def _parse_plant(raw: dict[str, object]) -> PlantData | None:
         species=species,
         common_names=common_names,
         image_url=image_url if isinstance(image_url, str) else None,
-        sensor_id=(
-            str(sensor.get("id", ""))
-            if sensor.get("id")
-            else None
-        ),
+        sensor_id=(str(sensor.get("id", "")) if sensor.get("id") else None),
         sensor_identifier=(
-            str(sensor.get("identifier", ""))
-            if sensor.get("identifier")
-            else None
+            str(sensor.get("identifier", "")) if sensor.get("identifier") else None
         ),
         sensor_online=bool(sensor.get("isOnline", False)),
         temperature=_reading("temperature"),
@@ -211,13 +205,9 @@ class SmartyPlantsClient:
                 timeout=_REQUEST_TIMEOUT,
             ) as resp:
                 if resp.status in (401, 403):
-                    raise SmartyPlantsAuthError(
-                        f"Authentication failed: {resp.status}"
-                    )
+                    raise SmartyPlantsAuthError(f"Authentication failed: {resp.status}")
                 if resp.status >= 400:
-                    raise SmartyPlantsError(
-                        f"API error: {resp.status}"
-                    )
+                    raise SmartyPlantsError(f"API error: {resp.status}")
                 result = await resp.json()
                 if not isinstance(result, dict):
                     raise SmartyPlantsError("Unexpected response format")
@@ -225,9 +215,7 @@ class SmartyPlantsClient:
         except SmartyPlantsError:
             raise
         except (aiohttp.ClientError, TimeoutError) as err:
-            raise SmartyPlantsConnectionError(
-                f"Connection error: {err}"
-            ) from err
+            raise SmartyPlantsConnectionError(f"Connection error: {err}") from err
 
     async def _async_get(
         self,
@@ -250,13 +238,9 @@ class SmartyPlantsClient:
                 timeout=_REQUEST_TIMEOUT,
             ) as resp:
                 if resp.status in (401, 403):
-                    raise SmartyPlantsAuthError(
-                        f"Authentication failed: {resp.status}"
-                    )
+                    raise SmartyPlantsAuthError(f"Authentication failed: {resp.status}")
                 if resp.status >= 400:
-                    raise SmartyPlantsError(
-                        f"API error: {resp.status}"
-                    )
+                    raise SmartyPlantsError(f"API error: {resp.status}")
                 result = await resp.json()
                 if not isinstance(result, dict):
                     raise SmartyPlantsError("Unexpected response format")
@@ -264,9 +248,7 @@ class SmartyPlantsClient:
         except SmartyPlantsError:
             raise
         except (aiohttp.ClientError, TimeoutError) as err:
-            raise SmartyPlantsConnectionError(
-                f"Connection error: {err}"
-            ) from err
+            raise SmartyPlantsConnectionError(f"Connection error: {err}") from err
 
     async def _async_get_paginated(
         self,
@@ -321,9 +303,8 @@ class SmartyPlantsClient:
         """Refresh the access token using the refresh token."""
         async with self._lock:
             # Re-check after acquiring lock - another coroutine may have refreshed
-            if (
-                self._access_token is not None
-                and not self._is_token_expired(self._access_token)
+            if self._access_token is not None and not self._is_token_expired(
+                self._access_token
             ):
                 return self._access_token
 
