@@ -30,4 +30,19 @@ jobs:
           python-version: "3.13"
           cache: pip
       - run: pip install -r requirements.txt -r requirements_test.txt
-      - run: pytest tests/ -v --timeout=30
+      - run: pytest tests/ --ignore=tests/live -v --timeout=30
+
+  test-live:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || !github.event.pull_request.head.repo.fork
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements_test.txt
+      - run: pytest tests/live/ -v --timeout=90
+        env:
+          SMARTYPLANTS_EMAIL: ${{ secrets.SMARTYPLANTS_EMAIL }}
+          SMARTYPLANTS_PASSWORD: ${{ secrets.SMARTYPLANTS_PASSWORD }}

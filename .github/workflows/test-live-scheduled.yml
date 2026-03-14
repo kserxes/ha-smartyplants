@@ -1,0 +1,23 @@
+name: Live API tests (scheduled)
+
+on:
+  schedule:
+    - cron: "30 2 */2 * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  test-live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements_test.txt
+      - run: pytest tests/live/ -v --timeout=90
+        env:
+          SMARTYPLANTS_EMAIL: ${{ secrets.SMARTYPLANTS_EMAIL }}
+          SMARTYPLANTS_PASSWORD: ${{ secrets.SMARTYPLANTS_PASSWORD }}
