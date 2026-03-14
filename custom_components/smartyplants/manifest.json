@@ -1,13 +1,13 @@
 {
   "domain": "smartyplants",
   "name": "SmartyPlants",
-  "codeowners": ["@espenh"],
+  "codeowners": ["@rexxars"],
   "config_flow": true,
   "dependencies": [],
-  "documentation": "https://github.com/espenh/ha-smartyplants",
+  "documentation": "https://github.com/rexxars/ha-smartyplants",
   "integration_type": "service",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/espenh/ha-smartyplants/issues",
+  "issue_tracker": "https://github.com/rexxars/ha-smartyplants/issues",
   "requirements": [],
   "version": "0.1.0"
 }
