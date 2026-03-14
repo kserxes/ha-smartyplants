@@ -1,0 +1,43 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Sign in with your SmartyPlants account. Only plants with an assigned sensor will appear in Home Assistant.",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
+      },
+      "reauth_confirm": {
+        "description": "Your SmartyPlants session has expired. Please sign in again.",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid email or password.",
+      "cannot_connect": "Unable to connect to SmartyPlants. Please try again later.",
+      "unknown": "An unexpected error occurred."
+    },
+    "abort": {
+      "already_configured": "This SmartyPlants account is already configured.",
+      "reauth_successful": "Re-authentication was successful."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Polling interval",
+          "show_status_sensors": "Show plant status sensors"
+        },
+        "data_description": {
+          "scan_interval": "How often to poll SmartyPlants for updated readings (minimum 5 minutes).",
+          "show_status_sensors": "Create additional sensors showing the SmartyPlants status (optimal, low, high, etc.) for each reading."
+        }
+      }
+    }
+  }
+}
