@@ -249,7 +249,7 @@ class SmartyPlantsClient:
                 headers=headers,
                 timeout=_REQUEST_TIMEOUT,
             ) as resp:
-                if resp.status == 401:
+                if resp.status in (401, 403):
                     raise SmartyPlantsAuthError(
                         f"Authentication failed: {resp.status}"
                     )
