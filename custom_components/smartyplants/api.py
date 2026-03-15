@@ -81,7 +81,9 @@ def _parse_plant(raw: dict[str, object]) -> PlantData | None:
     if not isinstance(plant_ref, dict):
         plant_ref = {}
 
-    species = str(plant_ref.get("scientificNameWithoutAuthor", ""))
+    genus = str(plant_ref.get("genus", ""))
+    species_epithet = str(plant_ref.get("scientificNameWithoutAuthor", ""))
+    species = f"{genus} {species_epithet}" if genus else species_epithet
     common_names_raw = plant_ref.get("commonNames")
     common_names = list(common_names_raw) if isinstance(common_names_raw, list) else []
 

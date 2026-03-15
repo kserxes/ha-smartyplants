@@ -112,7 +112,9 @@ def _plant_api_data() -> dict:
             "isOnline": True,
         },
         "plantReference": {
-            "scientificNameWithoutAuthor": "Monstera deliciosa",
+            "scientificNameWithoutAuthor": "deliciosa",
+            "genus": "Monstera",
+            "family": "Araceae",
             "commonNames": ["Swiss cheese plant"],
             "plantConfigurations": [
                 {
