@@ -93,9 +93,7 @@ class TestGetPlants:
         plants = await authenticated_client.async_get_plants()
 
         assert isinstance(plants, list)
-        assert len(plants) > 0, (
-            "Expected at least one plant - is this account set up?"
-        )
+        assert len(plants) > 0, "Expected at least one plant - is this account set up?"
 
     async def test_plant_has_required_fields(
         self, authenticated_client: SmartyPlantsClient
@@ -108,9 +106,7 @@ class TestGetPlants:
         assert plant.name
         assert plant.species
         assert isinstance(plant.common_names, list)
-        assert plant.sensor_id is not None, (
-            "First plant should have a sensor assigned"
-        )
+        assert plant.sensor_id is not None, "First plant should have a sensor assigned"
         assert plant.sensor_identifier is not None
         assert isinstance(plant.sensor_online, bool)
 
@@ -134,20 +130,12 @@ class TestGetPlants:
         assert len(populated) > 0, "Expected at least one sensor reading"
 
         for name, reading in populated:
-            assert isinstance(reading, SensorReading), (
-                f"{name} is not a SensorReading"
-            )
-            assert isinstance(reading.status, str), (
-                f"{name} status is not a string"
-            )
+            assert isinstance(reading, SensorReading), f"{name} is not a SensorReading"
+            assert isinstance(reading.status, str), f"{name} status is not a string"
             assert len(reading.status) > 0, f"{name} status is empty"
-            assert isinstance(reading.message, str), (
-                f"{name} message is not a string"
-            )
+            assert isinstance(reading.message, str), f"{name} message is not a string"
             if reading.value is not None:
-                assert isinstance(reading.value, float), (
-                    f"{name} value is not a float"
-                )
+                assert isinstance(reading.value, float), f"{name} value is not a float"
 
     async def test_reading_statuses_are_known_values(
         self, authenticated_client: SmartyPlantsClient
@@ -180,9 +168,7 @@ class TestGetPlants:
                         f"- API may have added a new status value"
                     )
 
-    async def test_thresholds_parsed(
-        self, authenticated_client: SmartyPlantsClient
-    ):
+    async def test_thresholds_parsed(self, authenticated_client: SmartyPlantsClient):
         """Verify threshold configs are parsed from plantConfigurations."""
         plants = await authenticated_client.async_get_plants()
         plant = plants[0]
@@ -210,8 +196,7 @@ class TestGetPlants:
         plants = await authenticated_client.async_get_plants()
         for plant in plants:
             assert plant.sensor_id is not None, (
-                f"Plant '{plant.name}' has no sensor "
-                f"- should have been filtered"
+                f"Plant '{plant.name}' has no sensor - should have been filtered"
             )
 
 
@@ -231,6 +216,4 @@ class TestGetRequiresAttention:
     ):
         attention_ids = await authenticated_client.async_get_requires_attention()
         for pid in attention_ids:
-            assert len(pid) > 10, (
-                f"Suspiciously short plant ID: {pid}"
-            )
+            assert len(pid) > 10, f"Suspiciously short plant ID: {pid}"

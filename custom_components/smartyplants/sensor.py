@@ -17,8 +17,8 @@ from homeassistant.const import (
     UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -314,9 +314,13 @@ async def async_setup_entry(
             reg_entry = ent_reg.async_get(entity_id)
             if reg_entry is None:
                 continue
-            if show_status and reg_entry.disabled_by is er.RegistryEntryDisabler.INTEGRATION:
+            disabled_by_integration = (
+                reg_entry.disabled_by is er.RegistryEntryDisabler.INTEGRATION
+            )
+            if show_status and disabled_by_integration:
                 ent_reg.async_update_entity(entity_id, disabled_by=None)
             elif not show_status and reg_entry.disabled_by is None:
                 ent_reg.async_update_entity(
-                    entity_id, disabled_by=er.RegistryEntryDisabler.INTEGRATION,
+                    entity_id,
+                    disabled_by=er.RegistryEntryDisabler.INTEGRATION,
                 )
