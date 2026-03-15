@@ -1,6 +1,6 @@
 # SmartyPlants for Home Assistant
 
-A Home Assistant custom integration for [SmartyPlants](https://www.smartyplants.co.uk/) plant sensors. Pulls sensor readings from the SmartyPlants cloud API and creates devices for each of your plants.
+An unofficial Home Assistant custom integration for [SmartyPlants](https://www.smartyplants.co.uk/) plant sensors. Pulls sensor readings from the SmartyPlants cloud API and creates devices for each of your plants.
 
 ## What you get
 
@@ -56,3 +56,11 @@ The integration polls the SmartyPlants API on the configured interval. It fetche
 
 - Home Assistant 2025.2.0 or later
 - A SmartyPlants account with at least one plant that has a sensor assigned
+
+## Disclaimer
+
+This project is not affiliated with, endorsed by, or connected to SmartyPlants LTD. It uses the same API as the SmartyPlants mobile app, which could change without notice.
+
+## License
+
+MIT-licensed. See LICENSE.
