@@ -46,6 +46,7 @@ class PlantData:
     battery: SensorReading | None = None
     voltage: SensorReading | None = None
 
+    environment_name: str | None = None
     needs_attention: bool = False
     attention_variant: str | None = None
     attention_message: str | None = None

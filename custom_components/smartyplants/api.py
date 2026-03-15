@@ -107,12 +107,20 @@ def _parse_plant(raw: dict[str, object]) -> PlantData | None:
 
     image_url = raw.get("imageUrl")
 
+    environment = raw.get("environment")
+    environment_name: str | None = None
+    if isinstance(environment, dict):
+        env_name = environment.get("name")
+        if isinstance(env_name, str) and env_name:
+            environment_name = env_name
+
     return PlantData(
         plant_id=str(raw.get("id", "")),
         name=str(raw.get("name", "")),
         species=species,
         common_names=common_names,
         image_url=image_url if isinstance(image_url, str) else None,
+        environment_name=environment_name,
         sensor_id=(str(sensor.get("id", "")) if sensor.get("id") else None),
         sensor_identifier=(
             str(sensor.get("identifier", "")) if sensor.get("identifier") else None

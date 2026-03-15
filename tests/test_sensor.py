@@ -53,6 +53,7 @@ def _make_plant(
         species="Monstera deliciosa",
         common_names=["Swiss cheese plant"],
         image_url=None,
+        environment_name="Living Room",
         sensor_id=MOCK_SENSOR_ID,
         sensor_identifier="SP-001",
         sensor_online=sensor_online,

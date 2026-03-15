@@ -19,12 +19,15 @@ from .models import PlantData
 
 def _get_device_info(plant: PlantData) -> DeviceInfo:
     """Return device info for a plant."""
-    return DeviceInfo(
+    info = DeviceInfo(
         identifiers={(DOMAIN, plant.plant_id)},
         name=plant.name,
         manufacturer="SmartyPlants",
         model=plant.species,
     )
+    if plant.environment_name:
+        info["suggested_area"] = plant.environment_name
+    return info
 
 
 class SmartyPlantsNeedsAttentionSensor(
