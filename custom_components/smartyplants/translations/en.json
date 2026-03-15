@@ -48,11 +48,61 @@
       "light": { "name": "Light" },
       "nutrient": { "name": "Nutrient" },
       "battery": { "name": "Battery" },
-      "temperature_status": { "name": "Temperature status" },
-      "humidity_status": { "name": "Humidity status" },
-      "soil_moisture_status": { "name": "Soil moisture status" },
-      "light_status": { "name": "Light status" },
-      "nutrient_status": { "name": "Nutrient status" }
+      "temperature_status": {
+        "name": "Temperature status",
+        "state": {
+          "optimal": "Optimal",
+          "low": "Low",
+          "high": "High",
+          "non_optimal_low": "Slightly low",
+          "non_optimal_high": "Slightly high",
+          "dangerously_low": "Dangerously low"
+        }
+      },
+      "humidity_status": {
+        "name": "Humidity status",
+        "state": {
+          "optimal": "Optimal",
+          "low": "Low",
+          "high": "High",
+          "non_optimal_low": "Slightly low",
+          "non_optimal_high": "Slightly high",
+          "dangerously_low": "Dangerously low"
+        }
+      },
+      "soil_moisture_status": {
+        "name": "Soil moisture status",
+        "state": {
+          "optimal": "Optimal",
+          "low": "Low",
+          "high": "High",
+          "non_optimal_low": "Slightly low",
+          "non_optimal_high": "Slightly high",
+          "dangerously_low": "Dangerously low"
+        }
+      },
+      "light_status": {
+        "name": "Light status",
+        "state": {
+          "optimal": "Optimal",
+          "low": "Low",
+          "high": "High",
+          "non_optimal_low": "Slightly low",
+          "non_optimal_high": "Slightly high",
+          "dangerously_low": "Dangerously low"
+        }
+      },
+      "nutrient_status": {
+        "name": "Nutrient status",
+        "state": {
+          "optimal": "Optimal",
+          "low": "Low",
+          "high": "High",
+          "non_optimal_low": "Slightly low",
+          "non_optimal_high": "Slightly high",
+          "dangerously_low": "Dangerously low"
+        }
+      }
     },
     "binary_sensor": {
       "needs_attention": { "name": "Needs attention" }
