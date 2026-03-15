@@ -18,6 +18,7 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -296,3 +297,23 @@ async def async_setup_entry(
             )
 
     async_add_entities(entities)
+
+    # entity_registry_enabled_default only applies on first registration.
+    # When the option changes on an existing install, we need to update
+    # the registry entries directly.
+    ent_reg = er.async_get(hass)
+    for plant_id in coordinator.data:
+        for description in STATUS_SENSORS:
+            unique_id = f"{plant_id}_{description.key}"
+            entity_id = ent_reg.async_get_entity_id("sensor", DOMAIN, unique_id)
+            if entity_id is None:
+                continue
+            reg_entry = ent_reg.async_get(entity_id)
+            if reg_entry is None:
+                continue
+            if show_status and reg_entry.disabled_by is er.RegistryEntryDisabler.INTEGRATION:
+                ent_reg.async_update_entity(entity_id, disabled_by=None)
+            elif not show_status and reg_entry.disabled_by is None:
+                ent_reg.async_update_entity(
+                    entity_id, disabled_by=er.RegistryEntryDisabler.INTEGRATION,
+                )
