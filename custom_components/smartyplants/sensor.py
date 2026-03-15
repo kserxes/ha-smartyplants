@@ -15,7 +15,6 @@ from homeassistant.const import (
     PERCENTAGE,
     EntityCategory,
     UnitOfConductivity,
-    UnitOfElectricPotential,
     UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant
@@ -52,6 +51,7 @@ NUMERIC_SENSORS: tuple[SmartyPlantsSensorDescription, ...] = (
         device_class=SensorDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
     ),
     SmartyPlantsSensorDescription(
         key="humidity",
@@ -60,6 +60,7 @@ NUMERIC_SENSORS: tuple[SmartyPlantsSensorDescription, ...] = (
         device_class=SensorDeviceClass.HUMIDITY,
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
     ),
     SmartyPlantsSensorDescription(
         key="soil_moisture",
@@ -68,6 +69,7 @@ NUMERIC_SENSORS: tuple[SmartyPlantsSensorDescription, ...] = (
         device_class=SensorDeviceClass.MOISTURE,
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
     ),
     SmartyPlantsSensorDescription(
         key="light",
@@ -75,6 +77,7 @@ NUMERIC_SENSORS: tuple[SmartyPlantsSensorDescription, ...] = (
         reading_key="light",
         native_unit_of_measurement="mol/d\u22c5m\u00b2",
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
     ),
     SmartyPlantsSensorDescription(
         key="nutrient",
@@ -83,6 +86,7 @@ NUMERIC_SENSORS: tuple[SmartyPlantsSensorDescription, ...] = (
         device_class=SensorDeviceClass.CONDUCTIVITY,
         native_unit_of_measurement=UnitOfConductivity.MILLISIEMENS_PER_CM,
         state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
     ),
     SmartyPlantsSensorDescription(
         key="battery",
@@ -92,15 +96,7 @@ NUMERIC_SENSORS: tuple[SmartyPlantsSensorDescription, ...] = (
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-    ),
-    SmartyPlantsSensorDescription(
-        key="voltage",
-        translation_key="voltage",
-        reading_key="voltage",
-        device_class=SensorDeviceClass.VOLTAGE,
-        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
-        state_class=SensorStateClass.MEASUREMENT,
-        entity_category=EntityCategory.DIAGNOSTIC,
+        suggested_display_precision=0,
     ),
 )
 
