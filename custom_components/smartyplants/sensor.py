@@ -14,7 +14,6 @@ from homeassistant.components.sensor import (
 from homeassistant.const import (
     PERCENTAGE,
     EntityCategory,
-    UnitOfConductivity,
     UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant
@@ -79,15 +78,17 @@ NUMERIC_SENSORS: tuple[SmartyPlantsSensorDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=1,
     ),
-    SmartyPlantsSensorDescription(
-        key="nutrient",
-        translation_key="nutrient",
-        reading_key="nutrient",
-        device_class=SensorDeviceClass.CONDUCTIVITY,
-        native_unit_of_measurement=UnitOfConductivity.MILLISIEMENS_PER_CM,
-        state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=1,
-    ),
+    # Nutrient sensor disabled: API currently always returns 0.
+    # Re-enable once firmware/API reports real conductivity data.
+    # SmartyPlantsSensorDescription(
+    #     key="nutrient",
+    #     translation_key="nutrient",
+    #     reading_key="nutrient",
+    #     device_class=SensorDeviceClass.CONDUCTIVITY,
+    #     native_unit_of_measurement=UnitOfConductivity.MILLISIEMENS_PER_CM,
+    #     state_class=SensorStateClass.MEASUREMENT,
+    #     suggested_display_precision=1,
+    # ),
     SmartyPlantsSensorDescription(
         key="battery",
         translation_key="battery",
@@ -129,13 +130,13 @@ STATUS_SENSORS: tuple[SmartyPlantsStatusSensorDescription, ...] = (
         device_class=SensorDeviceClass.ENUM,
         options=READING_STATUS_OPTIONS,
     ),
-    SmartyPlantsStatusSensorDescription(
-        key="nutrient_status",
-        translation_key="nutrient_status",
-        reading_key="nutrient",
-        device_class=SensorDeviceClass.ENUM,
-        options=READING_STATUS_OPTIONS,
-    ),
+    # SmartyPlantsStatusSensorDescription(
+    #     key="nutrient_status",
+    #     translation_key="nutrient_status",
+    #     reading_key="nutrient",
+    #     device_class=SensorDeviceClass.ENUM,
+    #     options=READING_STATUS_OPTIONS,
+    # ),
 )
 
 
