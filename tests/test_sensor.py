@@ -168,7 +168,8 @@ async def test_light(hass: HomeAssistant, plant_data: dict[str, PlantData]) -> N
     state = hass.states.get(entity_entry)
     assert state is not None
     assert state.state == "12.65"
-    assert state.attributes["unit_of_measurement"] == "mol/d\u22c5m\u00b2"
+    assert state.attributes["unit_of_measurement"] == "lx"
+    assert state.attributes["device_class"] == "illuminance"
 
 
 async def test_battery_diagnostic(

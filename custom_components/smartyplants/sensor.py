@@ -74,9 +74,10 @@ NUMERIC_SENSORS: tuple[SmartyPlantsSensorDescription, ...] = (
         key="light",
         translation_key="light",
         reading_key="light",
-        native_unit_of_measurement="mol/d\u22c5m\u00b2",
+        device_class=SensorDeviceClass.ILLUMINANCE,
+        native_unit_of_measurement="lx",
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=1,
+        suggested_display_precision=0,
     ),
     # Nutrient sensor disabled: API currently always returns 0.
     # Re-enable once firmware/API reports real conductivity data.
