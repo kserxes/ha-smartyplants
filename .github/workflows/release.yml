@@ -1,0 +1,141 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., v1.0.0, v1.0.0-beta.1)'
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Validate version format
+        id: validate_version
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          # Check if version starts with 'v'
+          if [[ ! "$VERSION" =~ ^v ]]; then
+            echo "Error: Version must start with 'v' (e.g., v1.0.0)"
+            exit 1
+          fi
+
+          # Extract version without 'v' prefix
+          VERSION_NUM="${VERSION#v}"
+
+          # Validate semver format (with optional prerelease suffix)
+          if [[ ! "$VERSION_NUM" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
+            echo "Error: Invalid version format. Expected: vX.Y.Z or vX.Y.Z-prerelease (e.g., v1.0.0, v1.0.0-beta.1)"
+            exit 1
+          fi
+
+          echo "VERSION_NUM=$VERSION_NUM" >> $GITHUB_OUTPUT
+          echo "Valid version: $VERSION"
+
+      - name: Check tag doesn't already exist
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          if git ls-remote --tags origin | grep -q "refs/tags/${VERSION}$"; then
+            echo "Error: Tag ${VERSION} already exists"
+            exit 1
+          fi
+          echo "Tag ${VERSION} is available"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install dependencies
+        run: |
+          uv venv
+          uv pip install -r requirements_test.txt
+
+      - name: Run tests
+        run: |
+          source .venv/bin/activate
+          pytest tests/ -v --tb=short
+
+      - name: Update manifest.json version
+        env:
+          VERSION_NUM: ${{ steps.validate_version.outputs.VERSION_NUM }}
+        run: |
+          python3 -c "
+          import json, os
+          with open('custom_components/smartyplants/manifest.json', 'r') as f:
+              manifest = json.load(f)
+          manifest['version'] = os.environ['VERSION_NUM']
+          with open('custom_components/smartyplants/manifest.json', 'w') as f:
+              json.dump(manifest, f, indent=2)
+              f.write('\n')
+          "
+
+      - name: Clean up venv before Hassfest
+        run: rm -rf .venv
+
+      - name: Validate with Hassfest
+        uses: home-assistant/actions/hassfest@master
+
+      - name: Commit version update
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add custom_components/smartyplants/manifest.json
+          git commit -m "chore(release): ${VERSION}"
+          git push
+
+      - name: Create and push tag
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          git tag "$VERSION"
+          git push origin "$VERSION"
+
+      - name: Create zip for manual installation
+        run: |
+          cd custom_components
+          zip -r ../smartyplants.zip smartyplants -x "*.pyc" -x "*__pycache__*"
+
+      - name: Check for previous tags
+        id: check_tags
+        run: |
+          TAG_COUNT=$(git tag | wc -l)
+          echo "tag_count=$TAG_COUNT" >> $GITHUB_OUTPUT
+
+      - name: Generate changelog
+        id: changelog
+        if: fromJSON(steps.check_tags.outputs.tag_count) > 1
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          tag: ${{ inputs.version }}
+          excludeTypes: build,docs,chore,style,refactor,perf,test,ci
+          writeToFile: false
+          useGitmojis: false
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.version }}
+          name: ${{ inputs.version }}
+          body: ${{ steps.changelog.outputs.changes || (fromJSON(steps.check_tags.outputs.tag_count) > 1 && 'Maintenance release' || 'Initial release') }}
+          draft: false
+          prerelease: ${{ contains(inputs.version, 'beta') || contains(inputs.version, 'rc') || contains(inputs.version, 'alpha') }}
+          files: smartyplants.zip
