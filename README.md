@@ -29,10 +29,8 @@ Plants without an assigned sensor are ignored.
 ### HACS (recommended)
 
 1. Open HACS in Home Assistant
-2. Click the three dots in the top right, then "Custom repositories"
-3. Add `https://github.com/rexxars/ha-smartyplants` as an "Integration"
-4. Search for "SmartyPlants" in HACS and install it
-5. Restart Home Assistant
+2. Search for "SmartyPlants" and install it
+3. Restart Home Assistant
 
 ### Manual
 
