@@ -6,14 +6,15 @@ An unofficial Home Assistant custom integration for [SmartyPlants](https://www.s
 
 Each plant with an assigned sensor becomes a device in Home Assistant with the following entities:
 
-| Entity          | Type          | Unit | Notes                              |
-| --------------- | ------------- | ---- | ---------------------------------- |
-| Temperature     | Sensor        | °C   |                                    |
-| Humidity        | Sensor        | %    |                                    |
-| Soil moisture   | Sensor        | %    | VWC (Volumetric Water Content)     |
-| Light           | Sensor        | lx   |                                    |
-| Battery         | Sensor        | %    | Diagnostic                         |
-| Needs attention | Binary sensor |      | Matches the SmartyPlants app alert |
+| Entity          | Type          | Unit | Notes                                                                                   |
+| --------------- | ------------- | ---- | --------------------------------------------------------------------------------------- |
+| Temperature     | Sensor        | °C   |                                                                                         |
+| Humidity        | Sensor        | %    |                                                                                         |
+| Soil moisture   | Sensor        | %    | VWC (Volumetric Water Content)                                                          |
+| Light           | Sensor        | lx   |                                                                                         |
+| Battery         | Sensor        | %    | Diagnostic                                                                              |
+| Needs attention | Binary sensor |      | Matches the SmartyPlants app alert                                                      |
+| Needs watering  | Binary sensor |      | On when soil moisture is below optimal (`LOW`, `NON_OPTIMAL_LOW`, or `DANGEROUSLY_LOW`) |
 
 There are also optional status sensors (temperature status, humidity status, etc.) that show the SmartyPlants assessment for each reading - "Optimal", "Low", "Slightly high", etc. These are disabled by default and can be toggled on or off in the integration options.
 

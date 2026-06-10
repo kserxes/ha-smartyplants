@@ -105,7 +105,8 @@
       }
     },
     "binary_sensor": {
-      "needs_attention": { "name": "Needs attention" }
+      "needs_attention": { "name": "Needs attention" },
+      "needs_watering": { "name": "Needs watering" }
     }
   }
 }
