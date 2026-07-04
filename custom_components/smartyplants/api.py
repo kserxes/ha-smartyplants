@@ -68,16 +68,21 @@ def _parse_thresholds(configs: list[dict[str, object]]) -> dict[str, PlantThresh
     return result
 
 
-def _parse_plant(raw: dict[str, object]) -> PlantData | None:
+def _parse_plant(raw: dict[str, object], sensors: dict[str, object]) -> PlantData | None:
     """Parse a raw plant dict into PlantData. Returns None if no sensor."""
-    sensor = raw.get("sensor")
-    if sensor is None:
-        return None
+    plant_id=str(raw.get("id", ""))
+    for i, s in enumerate(sensors.get("data")):
+        sensor = s.get("sensor")
+        if sensor is not None:
+            if str(sensor.get("plantId")) == plant_id:
+                break;
+        if i == len(sensors):
+            return None
 
     if not isinstance(sensor, dict):
         return None
 
-    plant_ref = raw.get("plantReference")
+    plant_ref = raw.get("data")
     if not isinstance(plant_ref, dict):
         plant_ref = {}
 
@@ -93,13 +98,9 @@ def _parse_plant(raw: dict[str, object]) -> PlantData | None:
 
     # Parse sensor data from the sensors array
     sensor_data: dict[str, object] = {}
-    sensors_list = raw.get("sensors")
-    if isinstance(sensors_list, list) and len(sensors_list) > 0:
-        first = sensors_list[0]
-        if isinstance(first, dict):
-            sd = first.get("sensorData")
-            if isinstance(sd, dict):
-                sensor_data = sd
+    sd = sensor.get("lastSensorStatusData")
+    if isinstance(sd, dict):
+        sensor_data = sd
 
     def _reading(key: str) -> SensorReading | None:
         val = sensor_data.get(key)
@@ -115,7 +116,7 @@ def _parse_plant(raw: dict[str, object]) -> PlantData | None:
             environment_name = env_name
 
     return PlantData(
-        plant_id=str(raw.get("id", "")),
+        plant_id=plant_id,
         name=str(raw.get("name", "")),
         species=species,
         common_names=common_names,
@@ -130,7 +131,8 @@ def _parse_plant(raw: dict[str, object]) -> PlantData | None:
         humidity=_reading("humidity"),
         moisture=_reading("waterLevel"),
         light=_reading("light"),
-        nutrient=_reading("nutrient"),
+        #nutrient=_reading("nutrient"),
+        nutrient=0,
         battery=_reading("batteryPercent"),
         voltage=_reading("voltage"),
         thresholds=thresholds,
@@ -348,13 +350,14 @@ class SmartyPlantsClient:
                 )
 
             return new_access_token
-
+    
     async def async_get_plants(self) -> list[PlantData]:
         """Fetch all plants from the API."""
+        sensors = await self._async_get("/sensors")
         raw_plants = await self._async_get_paginated("/plant")
         plants: list[PlantData] = []
         for raw in raw_plants:
-            parsed = _parse_plant(raw)
+            parsed = _parse_plant(raw, sensors)
             if parsed is not None:
                 plants.append(parsed)
         return plants
